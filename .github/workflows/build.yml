@@ -1,4 +1,4 @@
-name: Build and Deploy Vue App
+name: Vue CI/CD Pipeline
 
 on:
     push:
@@ -12,27 +12,44 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Setup Node.js
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
-                  node-version: 16
+                  node-version: 20
                   cache: "pnpm"
 
             - name: Install pnpm
-              uses: pnpm/action-setup@v2
+              uses: pnpm/action-setup@v3
               with:
-                  version: 7
+                  version: 8
+                  run_install: true # 确保安装pnpm
+
+            - name: Verify pnpm
+              run: pnpm --version
+
+            - name: Cache pnpm modules
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      ~/.pnpm-store
+                      node_modules
+                  key: \${{ runner.os }}-pnpm-\${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      \${{ runner.os }}-pnpm-
 
             - name: Install dependencies
-              run: pnpm install
+              run: |
+                  pnpm config set store-dir ~/.pnpm-store
+                  pnpm install --frozen-lockfile
 
             - name: Build project
               run: pnpm run build
 
-            - name: Upload artifact
+            - name: Upload production build
               uses: actions/upload-artifact@v4
               with:
                   name: dist
                   path: dist/
+                  retention-days: 7
