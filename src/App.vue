@@ -13,12 +13,29 @@
 		</div>
 		<todo-list
 			:todos="todos"
-			:filtered="filtered" />
-		<div class="side-bar">
+			:filtered="filtered"
+			:filtered-todos="filteredTodos" />
+		<div
+			class="side-bar"
+			v-show="todos.length !== 0">
 			<div
 				class="filter"
 				@click="filtered = !filtered"
 				v-text="filtered ? '显示所有' : '只显示未完成'"></div>
+			<div
+				class="delCompleted"
+				v-show="todos.filter((todo) => todo.completed).length !== 0"
+				v-text="'删除已完成'"
+				@click="todos = todos.filter((todo) => !todo.completed)"></div>
+			<div
+				class="delAll"
+				v-text="'删除所有'"
+				@click="todos = []">
+			</div>
+			<div
+				class="allCompleted"
+				v-text="'全部完成'"
+				@click="todos.forEach((todo) => (todo.completed = true))"></div>
 		</div>
 	</div>
 </template>
@@ -51,7 +68,13 @@
 				this.$refs.input.focus();
 			},
 		},
-
+		computed: {
+			filteredTodos() {
+				return this.filtered
+					? this.todos.filter((todo) => !todo.completed)
+					: this.todos;
+			},
+		},
 		mounted() {
 			this.todos = JSON.parse(localStorage.getItem("todos")) ?? [];
 		},
@@ -70,7 +93,7 @@
 		flex-direction: column;
 		cursor: pointer;
 	}
-	.filter {
+	.side-bar > * {
 		color: #666;
 		width: 100px;
 		padding: 5px;

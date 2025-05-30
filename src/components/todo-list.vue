@@ -18,6 +18,10 @@
 				type: Boolean,
 				default: () => false,
 			},
+			filteredTodos: {
+				type: Array,
+				default: () => [],
+			},
 		},
 		methods: {
 			deleteTodo(index) {
@@ -30,13 +34,7 @@
 				this.todos[index].completed = !this.todos[index].completed;
 			},
 		},
-		computed: {
-			filteredTodos() {
-				return this.filtered
-					? this.todos.filter((todo) => !todo.completed)
-					: this.todos;
-			},
-		},
+
 		watch: {
 			todos: {
 				handler() {
