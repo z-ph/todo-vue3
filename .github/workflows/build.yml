@@ -20,41 +20,19 @@ jobs:
                   node-version: 20
                   cache: "pnpm"
 
-            - name: Install pnpm
-              uses: pnpm/action-setup@v3
-              id: pnpm-setup
-              with:
-                  version: 8
-                  run_install: true
-
-            - name: Add pnpm to PATH
-              run: |
-                  echo "${{ steps.pnpm-setup.outputs.pnpm_home }}" >> $GITHUB_PATH
-                  echo "${{ steps.pnpm-setup.outputs.pnpm_bin_dir }}" >> $GITHUB_PATH
-
-            - name: Debug PATH and pnpm
-              run: |
-                  echo "PATH: $PATH"
-                  which pnpm || echo "pnpm not found in PATH"
-                  pnpm --version || echo "Failed to get pnpm version"
-
-            - name: Cache pnpm modules
+            - name: Cache node modules
               uses: actions/cache@v4
               with:
-                  path: |
-                      ~/.pnpm-store
-                      node_modules
-                  key: \${{ runner.os }}-pnpm-\${{ hashFiles('**/pnpm-lock.yaml') }}
+                  path: node_modules
+                  key: \${{ runner.os }}-npm-\${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                      \${{ runner.os }}-pnpm-
+                      \${{ runner.os }}-npm-
 
             - name: Install dependencies
-              run: |
-                  pnpm config set store-dir ~/.pnpm-store
-                  pnpm install --frozen-lockfile
+              run: npm ci
 
             - name: Build project
-              run: pnpm run build
+              run: npm run build
 
             - name: Upload production build
               uses: actions/upload-artifact@v4
