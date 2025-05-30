@@ -59,6 +59,10 @@
 </script>
 
 <style>
+	h1 {
+		margin: 0;
+		padding: 20px;
+	}
 	.side-bar {
 		position: absolute;
 		top: 150px;
@@ -82,14 +86,22 @@
 
 	#app {
 		background-color: #f5f5f5;
-		width: 100%;
 		position: absolute;
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
+		height: 100vh;
+		width: 100%;
+	}
+	#todo {
+		position: relative;
+		width: 720px;
+		background: #fff;
+		margin: 0 auto;
 		height: 100vh;
 	}
-
+	@media (max-width: 720px) {
+		#todo {
+			width: calc(100vw - 30px);
+		}
+	}
 	.input-group {
 		display: flex;
 		justify-content: center;
