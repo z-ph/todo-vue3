@@ -37,9 +37,6 @@
 		],
 		"parserOptions": {
 			"parser": "@babel/eslint-parser"
-		},
-		"rules": {
-			"prettier/prettier": "error"
 		}
 	},
 	"browserslist": [
