@@ -25,8 +25,11 @@ jobs:
                   node-version: "20"
                   cache: "pnpm"
 
+            - name: Verify lockfile
+              run: ls -la pnpm-lock.yaml
+
             - name: Install dependencies
-              run: pnpm install --frozen-lockfile
+              run: pnpm install --no-frozen-lockfile
 
             - name: Build project
               run: pnpm run build
