@@ -19,8 +19,10 @@ jobs:
                   node-version: "18"
                   cache: "npm"
 
-            - name: Install pnpm and dependencies
+            - name: Install pnpm and
               run: npm install pnpm
+
+            - name: dependencies
               run: pnpm install
 
             - name: Build project
