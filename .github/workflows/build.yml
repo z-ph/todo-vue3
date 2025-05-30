@@ -22,12 +22,21 @@ jobs:
 
             - name: Install pnpm
               uses: pnpm/action-setup@v3
+              id: pnpm-setup
               with:
                   version: 8
-                  run_install: true # 确保安装pnpm
+                  run_install: true
 
-            - name: Verify pnpm
-              run: pnpm --version
+            - name: Add pnpm to PATH
+              run: |
+                  echo "${{ steps.pnpm-setup.outputs.pnpm_home }}" >> $GITHUB_PATH
+                  echo "${{ steps.pnpm-setup.outputs.pnpm_bin_dir }}" >> $GITHUB_PATH
+
+            - name: Debug PATH and pnpm
+              run: |
+                  echo "PATH: $PATH"
+                  which pnpm || echo "pnpm not found in PATH"
+                  pnpm --version || echo "Failed to get pnpm version"
 
             - name: Cache pnpm modules
               uses: actions/cache@v4
