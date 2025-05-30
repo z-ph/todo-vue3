@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML格式化示例</title>
+  <style>
+    .container {
+      padding: 20px;
+      margin: 10px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 格式化前 -->
+  <div class="container" id="example-div" data-test="test" role="main" aria-label="Example"
+    style="color: blue; font-size: 16px;">
+    <h1>HTML属性格式化示例</h1>
+    <p>这个示例展示了HTML属性格式化前后的效果。</p>
+  </div>
+
+  <!-- 格式化后（使用我们的配置）将会变成：
+    <div
+        class="container"
+        id="example-div"
+        data-test="test"
+        role="main"
+        aria-label="Example"
+        style="color: blue; font-size: 16px;">
+        <h1>HTML属性格式化示例</h1>
+        <p>这个示例展示了HTML属性格式化前后的效果。</p>
+    </div>
+    -->
+
+  <button type="button" class="btn" id="submit-btn" onclick="handleClick()" disabled>点击我</button>
+
+  <script>
+    function handleClick() {
+      console.log('Button clicked!');
+    }
+  </script>
+</body>
+
+</html>
