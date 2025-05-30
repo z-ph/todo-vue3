@@ -1,4 +1,4 @@
-name: Build Vue Project
+name: Build and Deploy Vue Project
 
 on:
     push:
@@ -11,7 +11,9 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
 
             - name: Install pnpm
               uses: pnpm/action-setup@v2
@@ -39,3 +41,11 @@ jobs:
               with:
                   name: dist
                   path: dist/
+
+            - name: Deploy to GitHub Pages
+              if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./
+                  publish_branch: dist
