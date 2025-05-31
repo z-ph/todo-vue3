@@ -3,45 +3,22 @@
 	import checkBtn from "./check-btn.vue";
 	import delBtn from "./del-btn.vue";
 	import { useTodoStore } from "@/stores/todos";
-	import { watch } from "vue";
-	const props = defineProps({
-		todos: {
-			type: Array,
-			default: () => [],
-		},
-		filtered: {
-			type: Boolean,
-			default: () => false,
-		},
-		filteredTodos: {
-			type: Array,
-			default: () => [],
-		},
-	});
-	function deleteTodo(index) {
-		props.todos.splice(index, 1);
-	}
-	function save() {
-		localStorage.setItem("todos", JSON.stringify(props.todos));
-	}
-	function toggleCompleted(index) {
-		props.todos[index].completed = !props.todos[index].completed;
-	}
-	// 明确依赖 props.todos 的响应式值（推荐）
-	watch(
-		() => props.todos,
-		(newTodos) => {
-			localStorage.setItem("todos", JSON.stringify(newTodos));
-		},
-		{ deep: true }
-	);
+	import { storeToRefs } from "pinia";
+	const store = useTodoStore();
+	const { filteredTodos } = storeToRefs(store);
+	//预期情况下面这段代码，将接受到pinia里定义的方法
+	const { deleteTodo, toggleCompleted } = store; //实际情况这里是undefined
+	//控制台显示没用定义的方法
+	console.log(store);
+	//预期接收到pinia定义的方法，实际为undefined
+	console.log(deleteTodo, toggleCompleted);
 </script>
 <template>
 	<div class="todos">
 		<div
 			class="todo"
 			v-for="(todo, index) in filteredTodos"
-			:key="index">
+			:key="todo.id">
 			<check-btn
 				:todo="todo"
 				:checked="todo.completed"
@@ -49,7 +26,7 @@
 			<todo-content
 				:content="todo.text"
 				:line-through="todo.completed" />
-			<del-btn @click="deleteTodo(index)" />
+			<del-btn @click="deleteTodo(todo)" />
 		</div>
 	</div>
 </template>
