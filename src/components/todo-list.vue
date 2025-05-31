@@ -1,49 +1,40 @@
-<script>
+<script setup>
 	import todoContent from "./todo-content.vue";
 	import checkBtn from "./check-btn.vue";
 	import delBtn from "./del-btn.vue";
-	export default {
-		components: {
-			checkBtn,
-			todoContent,
-			delBtn,
+	import { useTodoStore } from "@/stores/todos";
+	import { watch } from "vue";
+	const props = defineProps({
+		todos: {
+			type: Array,
+			default: () => [],
 		},
-		name: "todo-list",
-		props: {
-			todos: {
-				type: Array,
-				default: () => [],
-			},
-			filtered: {
-				type: Boolean,
-				default: () => false,
-			},
-			filteredTodos: {
-				type: Array,
-				default: () => [],
-			},
+		filtered: {
+			type: Boolean,
+			default: () => false,
 		},
-		methods: {
-			deleteTodo(index) {
-				this.todos.splice(index, 1);
-			},
-			save() {
-				localStorage.setItem("todos", JSON.stringify(this.todos));
-			},
-			toggleCompleted(index) {
-				this.todos[index].completed = !this.todos[index].completed;
-			},
+		filteredTodos: {
+			type: Array,
+			default: () => [],
 		},
-
-		watch: {
-			todos: {
-				handler() {
-					this.save();
-				},
-				deep: true,
-			},
+	});
+	function deleteTodo(index) {
+		props.todos.splice(index, 1);
+	}
+	function save() {
+		localStorage.setItem("todos", JSON.stringify(props.todos));
+	}
+	function toggleCompleted(index) {
+		props.todos[index].completed = !props.todos[index].completed;
+	}
+	// 明确依赖 props.todos 的响应式值（推荐）
+	watch(
+		() => props.todos,
+		(newTodos) => {
+			localStorage.setItem("todos", JSON.stringify(newTodos));
 		},
-	};
+		{ deep: true }
+	);
 </script>
 <template>
 	<div class="todos">

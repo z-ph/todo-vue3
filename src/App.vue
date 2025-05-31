@@ -8,7 +8,7 @@
 				autocomplete="off"
 				@keyup.enter="submit"
 				v-model.trim="inputValue"
-				ref="input" />
+				ref="inputRef" />
 			<button @click="submit"></button>
 		</div>
 		<todo-list
@@ -40,45 +40,68 @@
 	</div>
 </template>
 
-<script>
+<script setup>
+	import { computed, onMounted, ref } from "vue";
 	import TodoList from "./components/todo-list.vue";
-
-	export default {
-		name: "App",
-		components: {
-			TodoList,
-		},
-		data() {
-			return {
-				todos: [],
-				inputValue: "",
-				filtered: false,
-			};
-		},
-		methods: {
-			submit() {
-				if (this.inputValue === "") {
-					return;
-				}
-				this.todos.push({
-					text: this.inputValue,
-					completed: false,
-				});
-				this.inputValue = "";
-				this.$refs.input.focus();
-			},
-		},
-		computed: {
-			filteredTodos() {
-				return this.filtered
-					? this.todos.filter((todo) => !todo.completed)
-					: this.todos;
-			},
-		},
-		mounted() {
-			this.todos = JSON.parse(localStorage.getItem("todos")) ?? [];
-		},
-	};
+	const todos = ref([]);
+	const inputValue = ref("");
+	const filtered = ref(false);
+	const inputRef = ref(null);
+	function submit() {
+		if (inputValue.value === "") {
+			return;
+		}
+		todos.value.push({
+			text: inputValue.value,
+			completed: false,
+		});
+		inputValue.value = "";
+		inputRef.value.focus();
+	}
+	const filteredTodos = computed(() => {
+		return filtered.value
+			? todos.value.filter((todo) => !todo.completed)
+			: todos.value;
+	});
+	onMounted(() => {
+		todos.value = JSON.parse(localStorage.getItem("todos")) ?? [];
+	});
+	// export default {
+	// 	name: "App",
+	// 	components: {
+	// 		TodoList,
+	// 	},
+	// 	data() {
+	// 		return {
+	// 			todos: [],
+	// 			inputValue: "",
+	// 			filtered: false,
+	// 		};
+	// 	},
+	// 	methods: {
+	// 		submit() {
+	// 			if (this.inputValue === "") {
+	// 				return;
+	// 			}
+	// 			this.todos.push({
+	// 				text: this.inputValue,
+	// 				completed: false,
+	// 			});
+	// 			this.inputValue = "";
+	// 			this.$refs.input.focus();
+	// 		},
+	// 	},
+	// 	computed: {
+	// 		filteredTodos() {
+	// 			return this.filtered
+	// 				? this.todos.filter((todo) => !todo.completed)
+	// 				: this.todos;
+	// 		},
+	// 	},
+	// 	mounted() {
+	// 		this.todos = JSON.parse(localStorage.getItem("todos")) ?? [];
+	// 	},
+	// };
 </script>
 
 <style>

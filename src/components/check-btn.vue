@@ -1,10 +1,13 @@
-<script>
-	export default {
-		name: "check-btn",
-		props: {
-			checked: Boolean,
-		},
-	};
+<script setup>
+const props = defineProps({
+	checked:Boolean,
+})
+	// export default {
+	// 	name: "check-btn",
+	// 	props: {
+	// 		checked: Boolean,
+	// 	},
+	// };
 </script>
 <template>
 	<div
