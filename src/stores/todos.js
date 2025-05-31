@@ -4,7 +4,6 @@ import { ref, computed, watch } from "vue";
 export const useTodoStore = defineStore("todo", () => {
 	const todos = ref([]);
 	todos.value = JSON.parse(localStorage.getItem("todos")) ?? [];
-	const inputValue = ref("");
 	const filtered = ref(false);
 	const filteredTodos = computed(() => {
 		return filtered.value
@@ -21,6 +20,9 @@ export const useTodoStore = defineStore("todo", () => {
 	function toggleCompleted(index) {
 		todos.value[index].completed = !todos.value[index].completed;
 	}
+	function test() {
+		console.log("test");
+	}
 	watch(
 		() => todos.value,
 		(newTodos) => {
@@ -31,8 +33,8 @@ export const useTodoStore = defineStore("todo", () => {
 	return {
 		todos,
 		filtered,
-		inputValue,
 		filteredTodos,
+		test,
 		deleteTodo,
 		toggleCompleted,
 	};

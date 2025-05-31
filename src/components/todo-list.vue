@@ -12,6 +12,8 @@
 	console.log(store);
 	//预期接收到pinia定义的方法，实际为undefined
 	console.log(deleteTodo, toggleCompleted);
+	console.log(store.deleteTodo); //undefined
+	console.log(store.test);
 </script>
 <template>
 	<div class="todos">

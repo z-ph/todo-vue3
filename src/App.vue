@@ -45,21 +45,14 @@
 	import TodoList from "./components/todo-list.vue";
 	import { storeToRefs } from "pinia";
 	import { useTodoStore } from "./stores/todos";
-	// const todos = ref([]);
-	// const inputValue = ref("");
-	// const filtered = ref(false);
-	// const filteredTodos = computed(() => {
-	// 	return filtered.value
-	// 	? todos.value.filter((todo) => !todo.completed)
-	// 	: todos.value;
-	// });
 	let id = 0;
 	const store = useTodoStore();
-	const { todos, inputValue, filtered, filteredTodos } = storeToRefs(store);
+	const { todos, filtered, filteredTodos } = storeToRefs(store);
 	todos.value.forEach((todo, index) => {
 		todo.id = index;
 		id++;
 	});
+	const inputValue = ref("");
 	const inputRef = ref(null);
 	function submit() {
 		if (inputValue.value === "") {
@@ -74,42 +67,6 @@
 		inputValue.value = "";
 		inputRef.value.focus();
 	}
-	// export default {
-	// 	name: "App",
-	// 	components: {
-	// 		TodoList,
-	// 	},
-	// 	data() {
-	// 		return {
-	// 			todos: [],
-	// 			inputValue: "",
-	// 			filtered: false,
-	// 		};
-	// 	},
-	// 	methods: {
-	// 		submit() {
-	// 			if (this.inputValue === "") {
-	// 				return;
-	// 			}
-	// 			this.todos.push({
-	// 				text: this.inputValue,
-	// 				completed: false,
-	// 			});
-	// 			this.inputValue = "";
-	// 			this.$refs.input.focus();
-	// 		},
-	// 	},
-	// 	computed: {
-	// 		filteredTodos() {
-	// 			return this.filtered
-	// 				? this.todos.filter((todo) => !todo.completed)
-	// 				: this.todos;
-	// 		},
-	// 	},
-	// 	mounted() {
-	// 		this.todos = JSON.parse(localStorage.getItem("todos")) ?? [];
-	// 	},
-	// };
 </script>
 
 <style>
